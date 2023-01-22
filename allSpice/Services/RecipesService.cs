@@ -42,4 +42,20 @@ public class RecipesService
         _repo.Remove(id);
         return $"{original.Title} has been deleted";
     }
+
+    internal Recipe Update(Recipe recipeUpdate, int id, string userId)
+    {
+        Recipe original = GetOne(id, userId);
+        original.Title = recipeUpdate.Title ?? original.Title;
+        original.Instructions = recipeUpdate.Instructions ?? original.Instructions;
+        original.Img = recipeUpdate.Img ?? original.Img;
+        original.Category = recipeUpdate.Category ?? original.Category;
+
+        bool edited = _repo.Update(original);
+        if (edited == false)
+        {
+            throw new Exception("Recipe was not edited");
+        }
+        return original;
+    }
 }

@@ -8,12 +8,14 @@ public class RecipesController : ControllerBase
     private readonly RecipesService _recipesService;
     private readonly Auth0Provider _auth0provider;
     private readonly IngredientsService _ingredientsService;
+    private readonly FavoritesService _favoritesService;
 
-    public RecipesController(RecipesService recipesService, Auth0Provider auth0provider, IngredientsService ingredientsService)
+    public RecipesController(RecipesService recipesService, Auth0Provider auth0provider, IngredientsService ingredientsService, FavoritesService favoritesService)
     {
         _recipesService = recipesService;
         _auth0provider = auth0provider;
         _ingredientsService = ingredientsService;
+        _favoritesService = favoritesService;
     }
 
     [HttpGet]
@@ -31,7 +33,7 @@ public class RecipesController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Recipe>> Getone(int id)
+    public async Task<ActionResult<Recipe>> GetOne(int id)
     {
         try
         {
@@ -53,6 +55,21 @@ public class RecipesController : ControllerBase
             Account userInfo = await _auth0provider.GetUserInfoAsync<Account>(HttpContext);
             List<Ingredient> ingredients = _ingredientsService.GetIngredientsByRecipe(id, userInfo?.Id);
             return Ok(ingredients);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpGet("{id}/favorites")]
+    public async Task<ActionResult<List<Favorite>>> GetFavorites(int id)
+    {
+        try
+        {
+            Account userInfo = await _auth0provider.GetUserInfoAsync<Account>(HttpContext);
+            List<Favorite> favorites = _favoritesService.GetFavorites(id, userInfo?.Id);
+            return Ok(favorites);
         }
         catch (Exception e)
         {
@@ -87,6 +104,21 @@ public class RecipesController : ControllerBase
             Account userInfo = await _auth0provider.GetUserInfoAsync<Account>(HttpContext);
             string message = _recipesService.Remove(id, userInfo.Id);
             return Ok(message);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult<Recipe>> Update([FromBody] Recipe recipeUpdate, int id)
+    {
+        try
+        {
+            Account userInfo = await _auth0provider.GetUserInfoAsync<Account>(HttpContext);
+            Recipe recipe = _recipesService.Update(recipeUpdate, id, userInfo.Id);
+            return Ok(recipe);
         }
         catch (Exception e)
         {

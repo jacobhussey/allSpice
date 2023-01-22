@@ -28,7 +28,7 @@ INSERT INTO
         `creatorId`
     )
 VALUES (
-        'test',
+        'test???????',
         'this is a test',
         'https://images.unsplash.com/photo-1575485670541-824ff288aaf8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80',
         'misc',
@@ -46,8 +46,25 @@ CREATE TABLE
         quantity VARCHAR(55) NOT NULL,
         recipeId INT NOT NULL,
         FOREIGN KEY (recipeId) REFERENCES recipes (id) ON DELETE CASCADE
-    ) default charset utf8;
+    ) default charset utf8 COMMENT '';
 
 INSERT INTO
     ingredients (name, quantity, `recipeId`)
-VALUES ('test', '5 cups of coffee', 1);
+VALUES ('test', '5 cups of coffee', 4);
+
+CREATE TABLE
+    recipeMembers(
+        id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        recipeId INT NOT NULL,
+        accountId VARCHAR(255) NOT NULL,
+        FOREIGN KEY (recipeId) REFERENCES recipes (id) ON DELETE CASCADE,
+        FOREIGN KEY (accountId) REFERENCES accounts (id) ON DELETE CASCADE
+    ) default charset utf8;
+
+SELECT ac.*, rm.id
+FROM recipeMembers rm
+    JOIN accounts ac ON rm.`accountId` = rm.id;
+
+INSERT INTO
+    `recipeMembers` (`recipeId`, `accountId`)
+VALUES (4, '639aaba2bcaa2ea237114bd8');

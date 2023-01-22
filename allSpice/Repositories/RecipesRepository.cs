@@ -68,4 +68,18 @@ public class RecipesRepository
         _db.Execute(sql, new { id });
     }
 
+    internal bool Update(Recipe original)
+    {
+        string sql = @"
+        UPDATE recipes
+        SET
+        title = @title,
+        instructions = @instructions,
+        img = @img,
+        category = @category
+        WHERE id = @id;
+        ";
+        int rows = _db.Execute(sql, original);
+        return rows > 0;
+    }
 }

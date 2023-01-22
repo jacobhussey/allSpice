@@ -14,12 +14,23 @@ public class IngredientsRepository
     {
         string sql = @"
         SELECT
-        i.*
-        FROM ingredients i 
+        *
+        FROM ingredients 
         WHERE recipeId = @recipeId;
         ";
-        List<Ingredient> ingredients = _db.Query<Ingredient>(sql).ToList();
+        List<Ingredient> ingredients = _db.Query<Ingredient>(sql, new { recipeId }).ToList();
         return ingredients;
+    }
+
+    internal Ingredient GetOne(int id)
+    {
+        string sql = @"
+        SELECT
+        *
+        FROM ingredients
+        WHERE id = @id;
+        ";
+        return _db.Query<Ingredient>(sql, new { id }).FirstOrDefault();
     }
 
     internal Ingredient Create(Ingredient ingredientData)
@@ -34,5 +45,14 @@ public class IngredientsRepository
         int id = _db.ExecuteScalar<int>(sql, ingredientData);
         ingredientData.Id = id;
         return ingredientData;
+    }
+
+    internal void Remove(int id)
+    {
+        string sql = @"
+        DELETE FROM ingredients
+        WHERE id = @id;
+        ";
+        _db.Execute(sql, new { id });
     }
 }

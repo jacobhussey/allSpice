@@ -11,3 +11,9 @@ public class Recipe
     public string CreatorId { get; set; }
     public Account Creator { get; set; }
 }
+
+
+public class MyRecipe : Recipe
+{
+    public int RecipeMemberId { get; set; }
+}
