@@ -17,15 +17,14 @@ public class FavoritesController : ControllerBase
 
     [HttpPost]
     [Authorize]
-    public async Task<ActionResult<Favorite>> Create([FromBody] RecipeMember recipeMemberData)
+    public async Task<ActionResult<Favorite>> Create([FromBody] Favorite favoriteData)
     {
         try
         {
-            Favorite userInfo = await _auth0Provider.GetUserInfoAsync<Favorite>(HttpContext);
-            recipeMemberData.AccountId = userInfo.Id;
-            int id = _favoritesService.Create(recipeMemberData);
-            userInfo.RecipeMemberId = id;
-            return Ok(userInfo);
+            Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+            favoriteData.AccountId = userInfo.Id;
+            Favorite favorite = _favoritesService.Create(favoriteData);
+            return Ok(favorite);
         }
         catch (Exception e)
         {
@@ -33,19 +32,19 @@ public class FavoritesController : ControllerBase
         }
     }
 
-    // [HttpDelete("{id}")]
-    // [Authorize]
-    // public async Task<ActionResult<string>> Remove(int id)
-    // {
-    //     try
-    //     {
-    //         Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
-    //         string Message = _favoritesService.Remove(id, userInfo.Id);
-    //         return Ok(Message);
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         return BadRequest(e.Message);
-    //     }
-    // }
+    [HttpDelete("{id}")]
+    [Authorize]
+    public async Task<ActionResult<string>> Remove(int id)
+    {
+        try
+        {
+            Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+            string Message = _favoritesService.Remove(id, userInfo.Id);
+            return Ok(Message);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
 }

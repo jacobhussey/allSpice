@@ -15,5 +15,5 @@ public class Recipe
 
 public class MyRecipe : Recipe
 {
-    public int RecipeMemberId { get; set; }
+    public int FavoriteId { get; set; }
 }

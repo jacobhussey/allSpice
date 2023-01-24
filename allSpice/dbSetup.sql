@@ -53,7 +53,7 @@ INSERT INTO
 VALUES ('test', '5 cups of coffee', 4);
 
 CREATE TABLE
-    recipeMembers(
+    favorites(
         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
         recipeId INT NOT NULL,
         accountId VARCHAR(255) NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE
     ) default charset utf8;
 
 SELECT ac.*, rm.id
-FROM recipeMembers rm
+FROM favorites rm
     JOIN accounts ac ON rm.`accountId` = rm.id;
 
 INSERT INTO

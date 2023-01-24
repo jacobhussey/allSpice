@@ -62,20 +62,20 @@ public class RecipesController : ControllerBase
         }
     }
 
-    [HttpGet("{id}/favorites")]
-    public async Task<ActionResult<List<Favorite>>> GetFavorites(int id)
-    {
-        try
-        {
-            Account userInfo = await _auth0provider.GetUserInfoAsync<Account>(HttpContext);
-            List<Favorite> favorites = _favoritesService.GetFavorites(id, userInfo?.Id);
-            return Ok(favorites);
-        }
-        catch (Exception e)
-        {
-            return BadRequest(e.Message);
-        }
-    }
+    // [HttpGet("{id}/favorites")]
+    // public async Task<ActionResult<List<Favorite>>> GetFavorites(int id)
+    // {
+    //     try
+    //     {
+    //         Account userInfo = await _auth0provider.GetUserInfoAsync<Account>(HttpContext);
+    //         List<Favorite> favorites = _favoritesService.GetFavorites(id, userInfo?.Id);
+    //         return Ok(favorites);
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         return BadRequest(e.Message);
+    //     }
+    // }
 
     [HttpPost]
     [Authorize]

@@ -8,7 +8,7 @@ public class Account
     public string Picture { get; set; }
 }
 
-public class Favorite : Account
+public class Liker : Account
 {
-    public int RecipeMemberId { get; set; }
+    public int FavoriteId { get; set; }
 }

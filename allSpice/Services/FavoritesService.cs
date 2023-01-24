@@ -13,25 +13,36 @@ public class FavoritesService
         _recipesService = recipesService;
     }
 
-    internal int Create(RecipeMember recipeMemberData)
+    internal Favorite Create(Favorite favoriteData)
     {
-        Recipe recipe = _recipesService.GetOne(recipeMemberData.recipeId, recipeMemberData.AccountId);
+        Recipe recipe = _recipesService.GetOne(favoriteData.RecipeId, favoriteData.AccountId);
 
-        int id = _repo.Create(recipeMemberData);
+        Favorite favorite = _repo.Create(favoriteData);
 
-        return id;
+        return favorite;
     }
 
-    internal List<Favorite> GetFavorites(int recipeId, string userId)
+    internal List<MyRecipe> GetMyFavorites(string accountId)
     {
-        Recipe recipe = _recipesService.GetOne(recipeId, userId);
-
-        List<Favorite> favorites = _repo.GetFavorites(recipeId);
-        return favorites;
+        List<MyRecipe> myRecipes = _repo.GetMyFavorites(accountId);
+        return myRecipes;
     }
 
-    // internal string Remove(int id, string userId)
-    // {
 
-    // }
+
+    internal string Remove(int id, string userId)
+    {
+        Favorite original = _repo.GetOne(id);
+        if (original == null)
+        {
+            throw new Exception("no favorite at this id");
+        }
+        if (original.AccountId != userId)
+        {
+            throw new Exception("you didnt favorite this");
+        }
+        _repo.Remove(id);
+        return $"removed favorite at id {id}";
+    }
+
 }
