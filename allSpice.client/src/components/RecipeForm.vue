@@ -1,6 +1,6 @@
 <template>
     <div class="modal-header">
-        <h1 class="modal-title fs-5" id="create-recipe-modal">Create Event</h1>
+        <h1 class="modal-title fs-5" id="create-recipe-modal">Create Recipe</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <form @submit.prevent="createRecipe()">
@@ -40,16 +40,9 @@
                 <option value="asian">Asian</option>
                 <option value="greek">Greek</option>
             </select>
-
-
-
-            <!-- FIXME add category -->
-
-
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Create Recipe</button>
+            <button type="submit" class="btn btn-danger rounded-pill">Submit</button>
         </div>
     </form>
 </template>
@@ -74,6 +67,7 @@ export default {
                 try {
                     await recipesService.createRecipe(editable.value)
                     Modal.getOrCreateInstance('#create-recipe-modal').hide()
+                    // editable = {}
                 } catch (error) {
                     console.error(error)
                     Pop.error(('[ERROR]'), error.message)

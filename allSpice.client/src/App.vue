@@ -11,12 +11,15 @@
   <CreateRecipe>
     <RecipeForm />
   </CreateRecipe>
+
+  <RecipeInfo />
 </template>
 
 <script>
 import { computed } from 'vue'
 import { AppState } from './AppState'
 import Navbar from './components/Navbar.vue'
+import RecipeInfo from './components/RecipeInfo.vue'
 import CreateRecipe from './components/CreateRecipe.vue'
 import RecipeForm from './components/RecipeForm.vue'
 
@@ -27,7 +30,7 @@ export default {
       appState: computed(() => AppState)
     }
   },
-  components: { Navbar }
+  components: { Navbar, RecipeInfo, CreateRecipe, RecipeForm }
 }
 </script>
 <style lang="scss">
